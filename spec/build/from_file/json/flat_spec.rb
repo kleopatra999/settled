@@ -7,10 +7,10 @@ RSpec.describe do
   end
 
   it "should have the correct settings" do
-    Settled.configuration.should == {
+    expect( Settled.configuration ).to eql({
       'foo' => 'bar',
       'baz' => 1
-    }
+    })
   end
 
 end

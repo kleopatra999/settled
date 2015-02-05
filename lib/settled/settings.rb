@@ -9,6 +9,7 @@ module Settled
 
     def initialize( &block )
       @configuration = {}
+      @files = []
       @instance_strategies = []
 
       if block_given?
@@ -26,8 +27,12 @@ module Settled
       @container = Dsl::Container.new( klass )
     end
 
-    def file( format, path )
-      @configuration = _container.instance( Dsl::File.new( format, path, configuration ).build )
+    def file( format, paths )
+      @files << [format, Array(paths)]
+    end
+
+    def files( format, paths )
+      file( format, paths )
     end
 
     def instance( *args )
@@ -37,11 +42,23 @@ module Settled
   private
 
     def finish_setup
-      Settled.configuration = configuration
+      config_hash = read_files
+
+      Settled.configuration = @configuration = _container.instance( config_hash )
 
       instance_strategies.each do |strategy|
         apply_instance_strategy( strategy )
       end
+    end
+
+    def read_files
+      config_hash = {}
+      @files.each do |format, paths|
+        paths.each do |path|
+          config_hash = Dsl::File.new( format, path, config_hash ).build
+        end
+      end
+      config_hash
     end
 
     def apply_instance_strategy( strategy )

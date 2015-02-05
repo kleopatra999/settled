@@ -43,9 +43,27 @@ Settled::Settings.build do
 
   container Hashie::Mash
 
-  file :json, '/etc/local/foo.json'
+  defaults {
+    foo: 'bar'
+  }
 
+  file :json, '/etc/local/foo.json'
   files :yaml, %w(/etc/local/bar.yml /etc/local/baz.yml)
+
+  env :FOO, 'foo'
+  env :FOO_BAR, 'foo.bar'
+
+  namespace :development do
+
+    defaults {
+      foo: 'bar'
+    }
+  
+    file :json, '/etc/local/bam.json'
+
+    env :BAM, 'bam'
+
+  end
 
 end
 

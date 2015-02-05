@@ -35,37 +35,40 @@ application.
 
 To initialize:
 
-    Settled::Settings.build do
+```ruby
+Settled::Settings.build do
 
-      instance :configatron, :singleton
-      instance :constant, AppConfig
+  instance :configatron, :singleton
+  instance :constant, :CONFIG
 
-      container Hashie::Mash
+  container Hashie::Mash
 
-      defaults {
-        foo: 'bar'
-      }
+  defaults {
+    foo: 'bar'
+  }
 
-      file :json, '/etc/local/foo.json'
+  file :json, '/etc/local/foo.json'
 
-      files :yaml, %w(/etc/local/bar.yml /etc/local/baz.yml)
+  files :yaml, %w(/etc/local/bar.yml /etc/local/baz.yml)
 
-      env :FOO, 'foo'
-      env :FOO_BAR, 'foo.bar'
+  env :FOO, 'foo'
+  env :FOO_BAR, 'foo.bar'
 
-      namespace :development do
+  namespace :development do
 
-        defaults {
-          foo: 'bar',
-        }
+    defaults {
+      foo: 'bar',
+    }
 
-        file :property, '/etc/local/development.config'
+    file :property, '/etc/local/development.config'
 
-        env :BAM, 'bam'
+    env :BAM, 'bam'
 
-      end
+  end
 
-    end
+end
 
-Settled.configuration # { settings Hashie ... }
-configatron           # { settings Hashie ... }
+Settled.configuration # your settings
+configatron           # your setting
+```
+

@@ -38,7 +38,7 @@ To initialize:
 ```ruby
 Settled::Settings.build do
 
-  instance :configatron, :singleton
+  instance :configatron
   instance :constant, :CONFIG
 
   container Hashie::Mash
@@ -69,6 +69,6 @@ Settled::Settings.build do
 end
 
 Settled.configuration # your settings
-configatron           # your setting
+CONFIG                # your settings
+configatron           # your settings
 ```
-

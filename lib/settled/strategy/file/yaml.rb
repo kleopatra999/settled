@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Settled
   module Strategy
     module File

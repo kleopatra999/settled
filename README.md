@@ -1,6 +1,7 @@
 # Settled
 
-TODO: Write a gem description
+A framework for defining settings.
+
 
 ## Installation
 
@@ -18,14 +19,53 @@ Or install it yourself as:
 
     $ gem install settled
 
+
 ## Usage
 
-TODO: Write usage instructions here
+Settled allows you to define settings in many different ways:
 
-## Contributing
+* Environment variables
+* JSON configuration file(s)
+* YAML configuration file(s)
+* Property file(s)
+* Database table(s)
 
-1. Fork it ( https://github.com/[my-github-username]/settled/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+In fact, you can mix and match the ways you define setting within a single
+application.
+
+To initialize:
+
+    Settled::Settings.build do
+
+      instance :configatron, :singleton
+      instance :constant, AppConfig
+
+      container Hashie::Mash
+
+      defaults {
+        foo: 'bar'
+      }
+
+      file :json, '/etc/local/foo.json'
+
+      files :yaml, %w(/etc/local/bar.yml /etc/local/baz.yml)
+
+      env :FOO, 'foo'
+      env :FOO_BAR, 'foo.bar'
+
+      namespace :development do
+
+        defaults {
+          foo: 'bar',
+        }
+
+        file :property, '/etc/local/development.config'
+
+        env :BAM, 'bam'
+
+      end
+
+    end
+
+Settled.configuration # { settings Hashie ... }
+configatron           # { settings Hashie ... }

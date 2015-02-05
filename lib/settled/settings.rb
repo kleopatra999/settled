@@ -17,8 +17,20 @@ module Settled
       end
     end
 
+  protected
+
+    def container( klass )
+      @container = Dsl::Container.new( klass )
+    end
+
     def file( format, path )
-      @configuration = Dsl::File.new( format, path, configuration ).build
+      @configuration = _container.instance( Dsl::File.new( format, path, configuration ).build )
+    end
+
+  private
+
+    def _container
+      @container || Dsl::Container.new( Hash )
     end
 
   end

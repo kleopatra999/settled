@@ -27,11 +27,11 @@ module Settled
       @container = Dsl::Container.new( klass )
     end
 
-    def file( format, paths )
-      @files << [format, Array(paths)]
+    def file( format, *paths )
+      @files << [format, paths]
     end
 
-    def files( format, paths )
+    def files( format, *paths )
       file( format, paths )
     end
 

@@ -86,7 +86,7 @@ You can read the specify to read the file.
 ```ruby
 Settled::Settings.build do
   ...
-  files :json, %w(/etc/local/one.config /etc/local/two/config)
+  files :json, '/etc/local/one.config', '/etc/local/two.config'
   ...
 end
 

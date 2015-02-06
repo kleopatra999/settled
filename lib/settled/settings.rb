@@ -11,6 +11,7 @@ module Settled
       @configuration = {}
       @files = []
       @instance_strategies = []
+      @namespaces = []
 
       if block_given?
         block.arity < 1 ?
@@ -39,16 +40,29 @@ module Settled
       @instance_strategies << args
     end
 
+    def namespace( name, &block )
+      @namespaces << [name, block]
+    end
+
   private
 
     def finish_setup
       config_hash = read_files
+      config_hash = apply_namespaces( config_hash )
 
       Settled.configuration = @configuration = _container.instance( config_hash )
 
       instance_strategies.each do |strategy|
         apply_instance_strategy( strategy )
       end
+    end
+
+    def apply_namespaces( config_hash )
+      @namespaces.each do |name, block|
+        config_hash.merge!( name.to_s => Settled::Dsl::Namespace.new( &block ).build )
+      end
+
+      config_hash
     end
 
     def read_files

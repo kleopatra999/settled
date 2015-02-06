@@ -47,6 +47,12 @@ Settled::Settings.build do
 
   files :yaml, %w(/etc/local/bar.yml /etc/local/baz.yml)
 
+  namespace :some_service do
+
+    file :json, '/etc/local/app/some_service/config.json'
+
+  end
+
 end
 
 Settled.configuration # your settings
